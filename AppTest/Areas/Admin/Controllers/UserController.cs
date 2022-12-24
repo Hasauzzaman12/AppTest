@@ -17,7 +17,7 @@ namespace AppTest.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            
+
                 //var dd = _userManager.GetUserId(HttpContext.User);
                 return View(_db.ApplicationUsers.ToList());
             

@@ -16,6 +16,7 @@ namespace AppTest.Areas.Admin.Controllers
         {
             _roleManager = roleManager;
             _db = db;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -107,8 +108,22 @@ namespace AppTest.Areas.Admin.Controllers
             {
                 TempData["save"] = "User Role assigned.";
                 return RedirectToAction(nameof(Index));
-            }
+        }
+        public ActionResult AssignUserRole()
+        {
+            var result = from ur in _db.UserRoles
+                         join r in _db.Roles on ur.RoleId equals r.Id
+                         join a in _db.ApplicationUsers on ur.UserId equals a.Id
+                         select new UserRoleMaping()
+                         {
+                             UserId = ur.UserId,
+                             RoleId = ur.RoleId,
+                             UserName = a.UserName,
+                             RoleName = r.Name
+                         };
+            ViewBag.UserRoles = result;
             return View();
         }
+
     }
 }
